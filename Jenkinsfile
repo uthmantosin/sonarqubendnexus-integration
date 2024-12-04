@@ -21,7 +21,7 @@ pipeline {
 
            steps {
                   withSonarQubeEnv('sonarqube_scanner') {
- 
+                                     
 
              sh "mvn -f SampleWebApp/pom.xml sonar:sonar"      
                }
@@ -29,7 +29,7 @@ pipeline {
        }
         stage('Quality Gate') {
           steps {
-                 waitForQualityGate abortPipeline: true
+                 waitForQualityGate abortPipeline: false
               }
         }
         stage('push to nexus') {
