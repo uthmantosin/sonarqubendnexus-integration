@@ -29,7 +29,7 @@ pipeline {
        }
         stage('Quality Gate') {
           steps {
-                 waitForQualityGate abortPipeline: false
+                 waitForQualityGate abortPipeline: true
               }
         }
         stage('push to nexus') {
