@@ -17,16 +17,21 @@ pipeline {
             }
         
             }
-        stage('Code Qualty Scan') {
+       stage('Code Qualty Scan') {
 
            steps {
                   withSonarQubeEnv('sonar_scanner') {
-                                     
+ 
 
              sh "mvn -f SampleWebApp/pom.xml sonar:sonar"      
                }
             }
        }
+        stage('Quality Gate') {
+          steps {
+                 waitForQualityGate abortPipeline: true
+              }
+        }
         stage('push to nexus') {
             steps {
                     nexusArtifactUploader artifacts: [[artifactId: 'SampleWebApp', classifier: '', file: 'SampleWebApp/target/SampleWebApp.war', type: 'war']], credentialsId: 'nexuspasswd', groupId: 'SampleWebApp', nexusUrl: 'ec2-44-203-170-122.compute-1.amazonaws.com:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-snapshots', version: '1.1-SNAPSHOT'
