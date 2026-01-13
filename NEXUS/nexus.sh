@@ -1,4 +1,5 @@
 
+
 #!/bin/bash
 
 echo "Starting Nexus Repository Manager installation..."
@@ -14,7 +15,7 @@ sudo mkdir -p /opt
 
 # Install Java and net-tools
 echo "Installing Java 8..."
-sudo apt install openjdk-8-jre-headless net-tools -y || {
+sudo apt install openjdk-11-jre-headless net-tools -y || {
     echo "Failed to install Java"
     exit 1
 }
@@ -37,17 +38,17 @@ fi
 # Download Nexus Repository Manager with specific version
 echo "Downloading Nexus..."
 NEXUS_VERSION="3.69.0-02"
-wget "https://download.sonatype.com/nexus/3/nexus-${NEXUS_VERSION}-unix.tar.gz" || {
+sudo wget "https://download.sonatype.com/nexus/3/nexus-${NEXUS_VERSION}-unix.tar.gz" | {
     echo "Failed to download Nexus"
     exit 1
 }
 
 # Extract the downloaded file
 echo "Extracting Nexus..."
-tar -zxvf "nexus-${NEXUS_VERSION}-unix.tar.gz"
+sudo tar -zxvf "nexus-${NEXUS_VERSION}-unix.tar.gz"
 
 # Rename the extracted folder
-mv "nexus-${NEXUS_VERSION}" nexus
+sudo mv "nexus-${NEXUS_VERSION}" nexus
 
 # Create nexus user - force recreation if needed
 echo "Setting up nexus user..."
@@ -79,7 +80,7 @@ echo 'run_as_user="nexus"' | sudo tee /opt/nexus/bin/nexus.rc > /dev/null
 sudo ln -sf /opt/nexus/bin/nexus /etc/init.d/nexus
 
 # Clean up downloaded archive
-rm "nexus-${NEXUS_VERSION}-unix.tar.gz"
+sudo rm "nexus-${NEXUS_VERSION}-unix.tar.gz"
 
 # Configure system limits for nexus user
 echo "Configuring system limits for nexus user..."
